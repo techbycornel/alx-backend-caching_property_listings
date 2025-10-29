@@ -9,7 +9,14 @@ from .utils import get_all_properties
 def property_list(request):
     properties = get_all_properties()
     data = list(properties.values())
-    return JsonResponse(data, safe=False)
+    properties = Property.objects.all().values(
+        "id", "title", "price", "location", "description"
+    )
+    return JsonResponse({
+        "status": "success",
+        "count": properties.count(),
+        "data": list(properties)
+    })
 
 class PropertyListView(View):
     def get(self, request):
