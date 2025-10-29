@@ -10,3 +10,8 @@ def property_list(request):
     properties = get_all_properties()
     data = list(properties.values())
     return JsonResponse(data, safe=False)
+
+class PropertyListView(View):
+    def get(self, request):
+        properties = Property.objects.all().values("id", "title", "price", "location", "description")
+        return JsonResponse(list(properties), safe=False)
